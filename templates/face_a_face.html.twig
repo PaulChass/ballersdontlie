@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ teams.0.Stats.Team }} VS {{ teams.1.Stats.Team}} - Pronostics / Statistiques / Tendances des équipes
+{% endblock %}
+
+
+{% block body %}
+{% include 'matchs_de_la_nuit.html.twig' %}
+
+{% include 'navbar.html.twig' %}
+
+
+<div class="container-fluid">
+<h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
+  <div class="row">
+    <div class="col-3" style="">
+        {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
+    </div>
+
+ 
+  </div>        
+  <div style="margin-top:200px;">    {% include 'matchs_de_la_nuit.html.twig' %}</div>
+{% endblock %}
