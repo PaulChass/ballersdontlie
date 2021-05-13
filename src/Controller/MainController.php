@@ -18,8 +18,12 @@ class MainController extends AbstractController
      */
     public function index(MatchsDeLaNuit $MatchsDeLaNuit): Response
     {
-        $matchsDeLaNuit = $MatchsDeLaNuit -> MatchsDeLanuit(0);
-        $matchsDeDemain = $MatchsDeLaNuit -> MatchsDeLanuit(1);
+        $matchsDeLaNuit = $MatchsDeLaNuit -> MatchsDeLanuit();
+        $matchsDeDemain=null;
+        if(count($matchsDeLaNuit)>6){
+            $matchsDeDemain= array_slice($matchsDeLaNuit,6);
+            $matchsDeLaNuit=array_slice($matchsDeLaNuit,0,6);
+        }
         
         return $this->render('home.html.twig', [
             'matchs'=>$matchsDeLaNuit,
@@ -31,19 +35,28 @@ class MainController extends AbstractController
      */
     public function faceAface(MatchsDeLaNuit $MatchsDeLaNuit,StatsManager $StatsManager, int $gameId, Request $request)
     {
-        $matchsDeLaNuit = $MatchsDeLaNuit -> MatchsDeLanuit(0);
-        $matchsDeDemain = $MatchsDeLaNuit -> MatchsDeLanuit(1);
+        $matchsDeLaNuit = $MatchsDeLaNuit -> MatchsDeLanuit();
+        $matchsDeDemain=null;
+        if(count($matchsDeLaNuit)>6){
+            $matchsDeDemain= array_slice($matchsDeLaNuit,6);
+            $matchsDeLaNuit=array_slice($matchsDeLaNuit,0,6);
+        }
         $equipesdelaNuit =  $MatchsDeLaNuit -> TeamsId($gameId);
+        
         $teams[0]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[0]);
         $teams[1]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[1]);
-        
-        //$joueursDomicile = $StatsManager -> TeamPlayers($equipesdelaNuit['HomeTeamId']);
+        $teams[0]['injuries'] = $StatsManager->injury($equipesdelaNuit[0]);
+        $teams[1]['injuries'] = $StatsManager->injury($equipesdelaNuit[1]);
+        $teams[0]['twitter'] = $StatsManager->twitter($equipesdelaNuit[0]);
+        $teams[1]['twitter'] = $StatsManager->twitter($equipesdelaNuit[1]);
+        $joueursDomicile = $StatsManager -> playersStats($equipesdelaNuit[0]);
+        $joueursExterieur = $StatsManager -> playersStats($equipesdelaNuit[1]);
         //$joueursExterieur = $StatsManager -> TeamPlayers($equipesdelaNuit['AwayTeamId']);
         //$game = $StatsManager -> Game();
         //Teams Players Game
         return $this->render('face_a_face.html.twig', [
-            //'joueurs_domicile'=>$joueursDomicile,
-            //'joueurs_exterieur'=>$joueursExterieur,
+            'joueurs_domicile'=>$joueursDomicile,
+            'joueurs_exterieur'=>$joueursExterieur,
             'matchs'=>$matchsDeLaNuit,
             'tomorrow_matchs'=>$matchsDeDemain,
             //'game'=>$game,

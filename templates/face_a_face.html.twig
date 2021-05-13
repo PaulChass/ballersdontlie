@@ -8,17 +8,82 @@
 {% block body %}
 {% include 'matchs_de_la_nuit.html.twig' %}
 
-{% include 'navbar.html.twig' %}
 
 
 <div class="container-fluid">
-<h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
   <div class="row">
-    <div class="col-3" style="">
-        {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
-    </div>
+    <div class="col-lg-8" style="order:2;width:100%;">
+         <h3 id="blessures" class="whitetitle"> Infirmerie </h3>
+      <div id="injuredplayers" class="injuries">   
+          
+          <table class="table table-hover table-dark">
+            <thead>
+              <tr>
+                <th scope="col"><img style="max-height:80px" src="https://stats.nba.com/media/img/teams/logos/{{teams.0.Stats.team_abv}}_logo.svg"/> Nom </th>
+                <th scope="col"> Blessure</th>
+                <th scope="col"> Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {% for blesse in teams.0.injuries %}
+                <td> {{blesse.player}} </td>
+                <td> {{blesse.injury}} </td>
+                <td> {{blesse.status}} </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <table class="table table-hover table-dark">
+            <thead>
+              <tr>
+                <th scope="col"><img style="max-height:80px" src="https://stats.nba.com/media/img/teams/logos/{{teams.1.Stats.team_abv}}_logo.svg"/>
+                Nom </th>
+                    <th scope="col"> Blessure</th>
+                <th scope="col"> Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              {% for blesse in teams.1.injuries %}
+              
+              <td> {{blesse.player}} </td>
+              <td> {{blesse.injury}} </td>
+              <td> {{blesse.status}} </td>
+              </tr>
+              {% endfor %}
 
- 
-  </div>        
-  <div style="margin-top:200px;">    {% include 'matchs_de_la_nuit.html.twig' %}</div>
+            </tbody>
+          </table>
+      </div>
+
+       <h3 id="joueurs" class="whitetitle"> Stats des Joueurs </h3>
+      {% include 'playerstats.html.twig' %}
+     
+
+      <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
+      {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
+      <h3 id="joueurs" class="whitetitle"> Stats des Joueurs </h3>
+      {% include 'playerstats.html.twig' %}   
+    </div>
+  
+    
+    <div class="col-lg-2 mobilehide" style="order:1;"></div>
+    <div class="col-lg-2 mobilehide" style="order:3;"></div>
+</div>   
+ <div class="row" style="opacity:0.9;justify-content:center">
+        <div class="col-4">
+          <a class="twitter-timeline" href="{{teams.0.twitter}}" data-chrome="no-footer" data-tweet-limit="12">Twitter</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+
+        <div class="col-4">
+          <a class="twitter-timeline" href="{{teams.1.twitter}}" data-chrome="no-footer" data-tweet-limit="12">Twitter</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+      </div>
+<div style="margin-top:200px;">    
+  {% include 'matchs_de_la_nuit.html.twig' %}
+</div>
+
 {% endblock %}

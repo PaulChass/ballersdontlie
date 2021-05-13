@@ -24,20 +24,28 @@ class StatsManager
     **/
     public function teamStats($teamId)
     {
-        $teamsStats = json_decode(file_get_contents('http://localhost/test/teamStats.php'));
+        $teamsStatsJson = $this->curl('team',$teamId);
+        $teamsStats=json_decode($teamsStatsJson);
         $teamStats=$this->returnStats($teamId, $teamsStats, null);
+        
         return $teamStats;
     } 
 
+    public function playersStats($teamId)
+    {
+        $players =  $this->curl('player',$teamId);
+        $playersStats= $this->returnPlayerStats($players,$teamId);
+        return $playersStats;
+    }
 
     public function returnStats($teamId,$teamsStats,$defTeamsStats)
     {
         
         $i=0;
         $teamStatsId[]= $teamsStats->resultSets[0]->rowSet;
-        while($teamStatsId[0][$i][0] != intval($teamId)){
+        
+        while($teamStatsId[0][$i][0] != $teamId){
             $i++;}
-            
         $stats['Team']=$teamStatsId[0][$i][1];    
         $stats['team_abv'] = $this -> getAbvFromId($teamId);       
         $stats['points']=$teamStatsId[0][$i][26];
@@ -78,7 +86,8 @@ class StatsManager
 
     public function getAbvFromId($id)
     {
-        $playerStats = json_decode(file_get_contents('http://localhost/test/playerStats.php'));
+        $playerStatsJson = $this->curl('player',$id);
+        $playerStats = json_decode($playerStatsJson);
        
         
         $i=0;
@@ -86,5 +95,155 @@ class StatsManager
             $i++;
         }
         return $playerStats->resultSets[0]->rowSet[$i][3];
+    }
+
+
+    public function returnPlayerStats($playersStats,$teamId)
+    {
+        $players=[];$player=[];
+        $playersStats=json_decode($playersStats);
+        for ($i=0; $i < count($playersStats->resultSets[0]->rowSet) ; $i++) { 
+            if ($playersStats->resultSets[0]->rowSet[$i][2]==$teamId)
+                {
+                    $player['id']=$playersStats->resultSets[0]->rowSet[$i][0];
+                    $player['name']=$playersStats->resultSets[0]->rowSet[$i][1];
+                    $player['games']=$playersStats->resultSets[0]->rowSet[$i][5];
+                    $player['minutes']=$playersStats->resultSets[0]->rowSet[$i][9];
+                    $player['minutesRank']=$playersStats->resultSets[0]->rowSet[$i][38];
+
+                    $player['points']=$playersStats->resultSets[0]->rowSet[$i][29];
+                    $player['pointsRank']=$playersStats->resultSets[0]->rowSet[$i][58];
+                    $player['rebounds']=$playersStats->resultSets[0]->rowSet[$i][21];
+                    $player['reboundsRank']=$playersStats->resultSets[0]->rowSet[$i][50];
+                    $player['assists']=$playersStats->resultSets[0]->rowSet[$i][22];
+                    $player['assistsRank']=$playersStats->resultSets[0]->rowSet[$i][51];
+                    $player['turnovers']=$playersStats->resultSets[0]->rowSet[$i][23];
+                    $player['turnoversRank']=$playersStats->resultSets[0]->rowSet[$i][52];
+                    $player['steals']=$playersStats->resultSets[0]->rowSet[$i][24];
+                    $player['stealsRank']=$playersStats->resultSets[0]->rowSet[$i][53];
+                    $player['blocks']=$playersStats->resultSets[0]->rowSet[$i][25];
+                    $player['blocksRank']=$playersStats->resultSets[0]->rowSet[$i][54];
+                    $player['plusminus']=$playersStats->resultSets[0]->rowSet[$i][30];
+                    $player['plusminusRank']=$playersStats->resultSets[0]->rowSet[$i][59];
+                    $player['fg_pct']=$playersStats->resultSets[0]->rowSet[$i][12];
+                    $player['fg_pctRank']=$playersStats->resultSets[0]->rowSet[$i][41];
+                    $player['three_fg_pct']=$playersStats->resultSets[0]->rowSet[$i][15];  
+                    $player['three_fg_pctRank']=$playersStats->resultSets[0]->rowSet[$i][44];   
+                    array_push($players,$player);
+                }
+        }
+      
+        usort($players, function($a, $b) {
+            return $a['pointsRank'] <=> $b['pointsRank'];
+        });
+        return $players;
+    }
+    public function curl($teamOrplayer,$teamId){
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Host:  stats.nba.com',
+            'Connection:  keep-alive',
+            'Accept:  application/json, text/plain, */*',
+            'x-nba-stats-token:  true',
+            'User-Agent:  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 Edg/88.0.705.74',
+            'x-nba-stats-origin:  stats',
+            'Origin:  https://www.nba.com',
+            'Sec-Fetch-Site:  same-site',
+            'Sec-Fetch-Mode:  cors',
+            'Sec-Fetch-Dest:  empty',
+            'Referer:  https://www.nba.com/',
+            'Accept-Encoding:  gzip, deflate, br',
+            'Accept-Language:  en-GB,en;q=0.9,en-US;q=0.8',
+            
+        ),
+    ));
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+return $response;
+}
+
+
+public function injury($teamId){
+     
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://www.rotowire.com/basketball/tables/injury-report.php?team=ALL&pos=ALL',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => '',
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => 'GET',
+      CURLOPT_HTTPHEADER => array(
+      ),
+    ));
+    
+    $response = curl_exec($curl);
+    
+    curl_close($curl);
+    $injuredPlayers = json_decode($response);
+    $team_abv=$this -> getAbvFromId($teamId);
+    $infirmerie=[];$injury= [];
+    for ($i=0; $i < count($injuredPlayers); $i++) { 
+            if($injuredPlayers[$i]->team ==$team_abv){
+                    $injury['player']=$injuredPlayers[$i]->player;
+                    $injury['injury']=$injuredPlayers[$i]->injury;
+                    $injury['status']=$injuredPlayers[$i]->status;
+                    array_push($infirmerie,$injury);
+            }
+        }
+        return $infirmerie;
+    }
+
+    public function twitter($teamId){
+        $team_abv=$this -> getAbvFromId($teamId);
+        $leagueTwitters=[
+            'CHI'=>'https://twitter.com/chicagobulls?s=20',
+            'IND'=>'https://twitter.com/Pacers?s=20',
+            'NOP'=>'https://twitter.com/PelicansNBA?s=20',
+            'MIA'=>'https://twitter.com/MiamiHEAT?s=20',
+            'ORL'=>'https://twitter.com/OrlandoMagic?s=20',
+            'MIL'=>'https://twitter.com/Bucks?s=20',
+            'MIN'=>'https://twitter.com/Timberwolves?s=20',
+            'DAL'=>'https://twitter.com/dallasmavs?s=20',
+            'LAL'=>'https://twitter.com/Lakers?s=20',
+            'LAC'=>'https://twitter.com/laclippers',
+            'CHA'=>'https://twitter.com/hornets?s=20',
+            'WAS'=>'https://twitter.com/WashWizards?s=20',
+            'OKC'=>'https://twitter.com/okcthunder?s=20',
+            'NYK'=>'https://twitter.com/nyknicks?s=20',
+            'DET'=>'https://twitter.com/DetroitPistons?s=20',
+            'UTA'=>'https://twitter.com/utahjazz?s=20',
+            'BOS'=>'https://twitter.com/celtics?s=20',
+            'ATL'=>'https://twitter.com/ATLHawks?s=20',
+            'SAS'=>'https://twitter.com/spurs?s=20',
+            'PHI'=>'https://twitter.com/sixers?s=20',
+            'BKN'=>'https://twitter.com/BrooklynNets?s=20',
+            'CLE'=>'https://twitter.com/cavs?s=20',
+            'TOR'=>'https://twitter.com/Raptors?s=20',
+            'MEM'=>'https://twitter.com/memgrizz?s=20',
+            'POR'=>'https://twitter.com/trailblazers?s=20',
+            'PHX'=>'https://twitter.com/Suns?s=20',
+            'GSW'=>'https://twitter.com/warriors?s=20',
+            'SAC'=>'https://twitter.com/SacramentoKings?s=20',
+            'HOU'=>'https://twitter.com/HoustonRockets?s=20',
+            'DEN'=>'https://twitter.com/nuggets?s=20'
+        ];
+        $twitter=$leagueTwitters[$team_abv];
+        return $twitter;
     }
 }

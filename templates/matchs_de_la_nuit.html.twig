@@ -3,7 +3,7 @@
       
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <h1 class="d-flex justify-content-center whitetitle"> Matchs à venir </h1>
+                <h1 class="d-flex justify-content-center whitetitle"> Matchs de la nuit du {{ "now"|date("d/m") }} </h1>
 
                     <div class="row d-flex d-block w-100 justify-content-around" alt="First slide">
                         {% for match in matchs  %}
@@ -32,8 +32,12 @@
                             <i class="fa fa-angle-right fa-10x"></i></div> #}
                     </div>
             </div>
+
+
+
+            {% if tomorrow_matchs is not null %}
             <div class="carousel-item">
-                <h1 class="d-flex justify-content-center whitetitle"> Matchs de la nuit du {{ "tomorrow"|date("d") }} aôut  </h1>
+                <h1 class="d-flex justify-content-center whitetitle"> Matchs de la nuit du {{ "now"|date("d/m") }} </h1>
 
                 <div class="row d-flex d-block w-100 justify-content-around" alt="Second Slide">
                         {% for match in tomorrow_matchs  %}
@@ -57,7 +61,8 @@
             </div>
               <ol class="carousel-indicators" style="position:relative;bottom:5px;">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+             {% endif %}
         </ol>
         </div>
     </div>

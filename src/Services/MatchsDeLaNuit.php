@@ -15,10 +15,10 @@ class MatchsDeLaNuit
  *     tableau avec noms et id des équipes à domicile et à l'exterieur ainsi que la date
  *     
 **/
-    public function MatchsDeLaNuit($day)
+    public function MatchsDeLaNuit()
     {       
         date_default_timezone_set('America/Chicago'); 
-        $date=time()+$day*60*60; 
+        $date=time(); 
         $schedule=$this->schedule();
         $games=$schedule->league->standard;
         $tonightGames=[];
