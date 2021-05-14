@@ -24,20 +24,34 @@ class StatsManager
     **/
     public function teamStats($teamId)
     {
-        $teamsStatsJson = $this->curl('team',$teamId);
+        $teamsStatsJson = $this->curl('team',$teamId,0);
         $teamsStats=json_decode($teamsStatsJson);
         $teamStats=$this->returnStats($teamId, $teamsStats, null);
         
         return $teamStats;
     } 
 
-    public function playersStats($teamId)
+    public function playersStats($teamId,$lastNgames)
     {
-        $players =  $this->curl('player',$teamId);
+        $players =  $this->curl('player',$teamId,$lastNgames);
         $playersStats= $this->returnPlayerStats($players,$teamId);
         return $playersStats;
     }
 
+    public function bestPlayers5($teamId,$playersStats)
+    {
+        $players5Stats=$this->playersStats($teamId,5);
+        $best3players = array_slice($players5Stats, 0, 3);  
+        for ($i=0; $i < 3; $i++) {
+            $j=0; 
+            while($best3players[$i]['id']!==$playersStats[$j]['id'])
+            {$j++;}
+            $best3players[$i]['pointsDiff'] = $best3players[$i]['points']-$playersStats[$j]['points'];
+        }
+        return $best3players;
+    }
+
+    
     public function returnStats($teamId,$teamsStats,$defTeamsStats)
     {
         
@@ -86,7 +100,7 @@ class StatsManager
 
     public function getAbvFromId($id)
     {
-        $playerStatsJson = $this->curl('player',$id);
+        $playerStatsJson = $this->curl('player',$id,0);
         $playerStats = json_decode($playerStatsJson);
        
         
@@ -138,11 +152,12 @@ class StatsManager
         });
         return $players;
     }
-    public function curl($teamOrplayer,$teamId){
+    public function curl($teamOrplayer,$teamId,$lastNgames){
+        
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
+        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames='.$lastNgames.'&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,

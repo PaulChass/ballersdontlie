@@ -13,7 +13,9 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-8" style="order:2;width:100%;">
-         <h3 id="blessures" class="whitetitle"> Infirmerie </h3>
+      <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
+      {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
+      <h3 id="blessures" class="whitetitle"> Infirmerie </h3>
       <div id="injuredplayers" class="injuries">   
           
           <table class="table table-hover table-dark">
@@ -61,10 +63,7 @@
       {% include 'playerstats.html.twig' %}
      
 
-      <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
-      {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
-      <h3 id="joueurs" class="whitetitle"> Stats des Joueurs </h3>
-      {% include 'playerstats.html.twig' %}   
+       
     </div>
   
     

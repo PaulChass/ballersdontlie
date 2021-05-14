@@ -17,7 +17,7 @@ class MatchsDeLaNuit
 **/
     public function MatchsDeLaNuit()
     {       
-        date_default_timezone_set('America/Chicago'); 
+        date_default_timezone_set('America/Indiana/Indianapolis'); 
         $date=time(); 
         $schedule=$this->schedule();
         $games=$schedule->league->standard;
@@ -44,7 +44,7 @@ class MatchsDeLaNuit
                 $match['Time']=date($gamedate);
                 //$match['Time']=date('H:i', mktime(date('H', strtotime($gamedate)),date('i', strtotime($gamedate))));
                 array_push($tonightGames,$match);
-                date_default_timezone_set('America/Chicago');
+                date_default_timezone_set('America/Indiana/Indianapolis');
             }
         }
         return $tonightGames;

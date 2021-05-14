@@ -43,15 +43,16 @@ class MainController extends AbstractController
             $matchsDeLaNuit=array_slice($matchsDeLaNuit,0,6);
         }
         $equipesdelaNuit =  $MatchsDeLaNuit -> TeamsId($gameId);
-        
         $teams[0]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[0]);
         $teams[1]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[1]);
         $teams[0]['injuries'] = $StatsManager->injury($equipesdelaNuit[0]);
         $teams[1]['injuries'] = $StatsManager->injury($equipesdelaNuit[1]);
         $teams[0]['twitter'] = $StatsManager->twitter($equipesdelaNuit[0]);
         $teams[1]['twitter'] = $StatsManager->twitter($equipesdelaNuit[1]);
-        $joueursDomicile = $StatsManager -> playersStats($equipesdelaNuit[0]);
-        $joueursExterieur = $StatsManager -> playersStats($equipesdelaNuit[1]);
+        $joueursDomicile = $StatsManager -> playersStats($equipesdelaNuit[0],0);
+        $teams[0]['BestPlayers'] = $StatsManager->bestPlayers5($equipesdelaNuit[0],$joueursDomicile);
+        $joueursExterieur = $StatsManager -> playersStats($equipesdelaNuit[1],0);
+        $teams[1]['BestPlayers'] = $StatsManager->bestPlayers5($equipesdelaNuit[1],$joueursExterieur);
         //$joueursExterieur = $StatsManager -> TeamPlayers($equipesdelaNuit['AwayTeamId']);
         //$game = $StatsManager -> Game();
         //Teams Players Game
