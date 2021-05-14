@@ -31,10 +31,11 @@ class MainController extends AbstractController
         ]);
     }
     /**
-     * @Route("/comparaison/{gameId}", name="face-a-face")
+     * @Route("/matchup/{gameId}", name="face-a-face")
      */
     public function faceAface(MatchsDeLaNuit $MatchsDeLaNuit,StatsManager $StatsManager, int $gameId, Request $request)
     {
+        
         $matchsDeLaNuit = $MatchsDeLaNuit -> MatchsDeLanuit();
         $matchsDeDemain=null;
         if(count($matchsDeLaNuit)>6){

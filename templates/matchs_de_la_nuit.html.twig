@@ -42,7 +42,7 @@
                 <div class="row d-flex d-block w-100 justify-content-around" alt="Second Slide">
                         {% for match in tomorrow_matchs  %}
                         <div class="col-lg-2 col-3" style="margin:20px 0px 20px 0px;">
-                            <button class="card fa bg-dark" ><a href={{  path('home') }}>   
+                            <button class="card fa bg-dark" ><a href= {{ path('face-a-face', {gameId: match.GameId}) }}#comparaison > 
                                 <li class="list-group-item" style="list-style:none">
                                     <img src="{{match.HomeLogoUrl}}" class="card-img p-2" style="height:70px;width:120px;" ></li>
                                 <li class="list-group-item" style="list-style:none">
