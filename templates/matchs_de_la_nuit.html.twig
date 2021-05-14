@@ -7,7 +7,7 @@
 
                     <div class="row d-flex d-block w-100 justify-content-around" alt="First slide">
                         {% for match in matchs  %}
-                        <div class="col-lg-2 col-3" style="margin:20px 0px 20px 0px;">
+                        <div class="col-2" style="margin:20px 0px 0px 0px;">
                             <button class="card fa bg-dark" style="z-index:1070" ><a href= {{ path('face-a-face', {gameId: match.GameId}) }}#comparaison >   
                                 <li class="list-group-item" style="list-style:none">
                                     <img src="{{match.HomeLogoUrl}}" class="card-img p-2" style="height:70px;width:120px;" >

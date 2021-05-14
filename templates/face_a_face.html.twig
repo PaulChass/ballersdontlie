@@ -10,9 +10,80 @@
 
 
 
-<div class="container-fluid">
+<div class="container-fluid" style="width:100%">
   <div class="row">
-    <div class="col-lg-8" style="order:2;width:100%;">
+    <div class="col-12 col-lg-8" style="order:2;width:100%;">
+
+
+      <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Meilleurs scoreurs 5 derniers matchs </h3>
+      <div class="row">
+          <div class="col-6" style="color:white;font-size:1,2rem;" >
+            {% for player in teams.0.BestPlayers %}
+              <div class="row" style="margin-bottom:50px">
+                <div class="col-6"><img class="max300" style="max-width:200px;" src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/{{player.id}}.png"></br>
+                <span style="color:white;text-align:center">{{player.name}}</span>
+                </div>
+                  <div class="col-6" style="text-align:center;">
+                    <p>{{player.points}}  {% if player.pointsDiff < 0 %} <span style="color :red">({{player.pointsDiff}})</span>
+                    {% elseif player.pointsDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.pointsDiff}}</span>)
+                    {% endif %}</p>
+
+                  <p>{{player.assists}}  {% if player.assistsDiff < 0 %} (<span style="color :red">{{player.assistsDiff}}</span>)
+                    {% elseif player.assistsDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.assistsDiff}}</span>)
+                    {% endif %}</p>
+
+                    <p>{{player.rebounds}}  {% if player.reboundsDiff < 0 %} (<span style="color :red">{{player.reboundsDiff}}</span>)
+                    {% elseif player.reboundsDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.reboundsDiff}}</span>)
+                    {% endif %}</p>
+
+                    <p>{{player.minutes}} min {% if player.minutesDiff < 0 %} (<span style="color :red">{{player.minutesDiff}}</span>)
+                    {% elseif player.minutesDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.minutesDiff}}</span>)
+                    {% endif %}</p>
+                  
+                  </div>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="col-6" style="color:white;font-size:1,2rem;" >
+            {% for player in teams.1.BestPlayers %}
+              <div class="row" style="margin-bottom:50px">
+                <div class="col-6"><img class="max300" style="max-width:200px;" src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/{{player.id}}.png">
+                                <span style="color:white;text-align:center">{{player.name}}</span>
+
+                </div>
+                  <div class="col-6">
+                    <p>{{player.points}}  {% if player.pointsDiff < 0 %} <span style="color :red">({{player.pointsDiff}})</span>
+                    {% elseif player.pointsDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.pointsDiff}}</span>)
+                    {% endif %}</p>
+
+                  <p>{{player.assists}}  {% if player.assistsDiff < 0 %} (<span style="color :red">{{player.assistsDiff}}</span>)
+                    {% elseif player.assistsDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.assistsDiff}}</span>)
+                    {% endif %}</p>
+
+                    <p>{{player.rebounds}}  {% if player.reboundsDiff < 0 %} (<span style="color :red">{{player.reboundsDiff}}</span>)
+                    {% elseif player.reboundsDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.reboundsDiff}}</span>)
+                    {% endif %}</p>
+
+                    <p>{{player.minutes}} min {% if player.minutesDiff < 0 %} (<span style="color :red">{{player.minutesDiff}}</span>)
+                    {% elseif player.minutesDiff == 0 %}
+                    {% else %}(<span class="text-success">+{{player.minutesDiff}}</span>)
+                    {% endif %}</p>
+                  
+                  </div>
+              </div>
+            {% endfor %}
+          </div>
+   
+      </div>
+
+
       <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
       {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
       <h3 id="blessures" class="whitetitle"> Infirmerie </h3>

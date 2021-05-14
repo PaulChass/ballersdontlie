@@ -47,22 +47,26 @@ class StatsManager
             while($best3players[$i]['id']!==$playersStats[$j]['id'])
             {$j++;}
             $best3players[$i]['pointsDiff'] = $best3players[$i]['points']-$playersStats[$j]['points'];
+            $best3players[$i]['assistsDiff'] = $best3players[$i]['assists']-$playersStats[$j]['assists'];
+            $best3players[$i]['reboundsDiff'] = $best3players[$i]['rebounds']-$playersStats[$j]['rebounds'];
+            $best3players[$i]['minutesDiff'] = $best3players[$i]['minutes']-$playersStats[$j]['minutes'];
+            $best3players[$i]['minutesDiff'] = $best3players[$i]['minutes']-$playersStats[$j]['minutes'];
         }
         return $best3players;
     }
 
-    
+
     public function returnStats($teamId,$teamsStats,$defTeamsStats)
     {
         
         $i=0;
         $teamStatsId[]= $teamsStats->resultSets[0]->rowSet;
-        
         while($teamStatsId[0][$i][0] != $teamId){
             $i++;}
         $stats['Team']=$teamStatsId[0][$i][1];    
         $stats['team_abv'] = $this -> getAbvFromId($teamId);       
         $stats['points']=$teamStatsId[0][$i][26];
+        $stats['minutes']=$teamStatsId[0][$i][6];
         $stats['pointsRank'] = $teamStatsId[0][$i][52];
         $stats['rebounds']=$teamStatsId[0][$i][18];
         $stats['reboundsRank'] = $teamStatsId[0][$i][44];
