@@ -15,25 +15,25 @@ class TeamStatsType extends AbstractType
     {
         $builder
             ->add('lastNgames', IntegerType::class, array(
-                'label' => 'X derniers matchs','required' => false))
+                'label' => 'X derniers','required' => false))
             ->add('location', ChoiceType::class, [
                 'choices'  => [
-                    'non' => null,
-                    'Oui' => 'yes',
+                    'non' => 'non',
+                    'domicile vs exterieur' => 'yes',
                 ],
-                'label' => 'Domicile/exterieur','required' => false
+                'label' => 'Domicile/exterieur'
             ])
             ->add('outcome', ChoiceType::class, [
                 'choices'  => [
-                    'Tout' => '',
-                    'Victoires uniquement' => 'W',
-                    'Défaites uniquement'=>'L'
+                    'Win et Lose' => '',
+                    'Win ' => 'W',
+                    'Lose'=>'L'
                 ],
                 'label' => 'Victoires/Défaites','required' => false
             ])
             ->add('opponentTeamId', ChoiceType::class, [
                 'choices'  => [
-                    'Total' => null,
+                    'non' => null,
                     'Vs Matchup' => 1,
                 ]
             ])

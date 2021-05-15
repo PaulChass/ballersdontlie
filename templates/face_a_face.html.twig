@@ -86,9 +86,19 @@
 
 
       <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
-      {{ form(form) }}
-
+        
       {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
+      {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="row" style="font-size:1rem;color:white;">
+          <div class="col-2">{{ form_row(form.lastNgames) }}</div>
+          <div class="col ">    {{ form_row(form.location) }}</div>
+          <div class="col ">    {{ form_row(form.outcome) }}</div>
+          <div class="col ">    {{ form_row(form.opponentTeamId, {  'label': 'vsMatchup' }) }}</div>
+          <div class="col ">    {{ form_row(form.paceAdjust) }}</div>
+          <div class="col " style="margin-top:25px;">  {{ form_row(form.Charger, { 'attr' : { 'class': 'btn btn-dark' }  }) }}</div>
+          {{ form_end(form) }}
+        </div>
       <h3 id="blessures" class="whitetitle"> Infirmerie </h3>
       <div id="injuredplayers" class="injuries">   
           

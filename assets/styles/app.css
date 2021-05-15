@@ -378,3 +378,6 @@ color: black;
 }h3{size:8rem;}
 
 
+#team_stats_lastNgames{font-size:0.7rem;width:100%;position:relative;bottom:3px;}
+#team_stats_Charger{font-size:0.7rem;}
+select{width:100%;}
