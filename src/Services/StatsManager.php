@@ -22,9 +22,9 @@ class StatsManager
      *     tableau avec stats des équipes à domicile et à l'exterieur ainsi que la date
      *     
     **/
-    public function teamStats($teamId)
+    public function teamStats($teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust)
     {
-        $teamsStatsJson = $this->curl('team',$teamId,0);
+        $teamsStatsJson = $this->curl('team',$teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust);
         $teamsStats=json_decode($teamsStatsJson);
         $teamStats=$this->returnStats($teamId, $teamsStats, null);
         
@@ -156,12 +156,12 @@ class StatsManager
         });
         return $players;
     }
-    public function curl($teamOrplayer,$teamId,$lastNgames){
+    public function curl($teamOrplayer,$teamId,$lastNgames,$location='',$outcome='',$opponentTeamId=0,$paceAdjust='N'){
         
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames='.$lastNgames.'&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
+        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames='.$lastNgames.'&LeagueID=00&Location='.$location.'&MeasureType=Base&Month=0&OpponentTeamID='.$opponentTeamId.'&Outcome='.$outcome.'&PORound=0&PaceAdjust='.$paceAdjust.'&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,

@@ -16,6 +16,7 @@
 
 
       <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Meilleurs scoreurs 5 derniers matchs </h3>
+      
       <div class="row">
           <div class="col-6" style="color:white;font-size:1,2rem;" >
             {% for player in teams.0.BestPlayers %}
@@ -85,6 +86,8 @@
 
 
       <h3 id="equipes" class="whitetitle" style="text-align:center;font-size:2em"> Stats des équipes </h3>
+      {{ form(form) }}
+
       {% include 'statarraytemplate.html.twig' with {'id': 'overall','home':teams.0.Stats,'away':teams.1.Stats, 'arrayTitle':'Stats Equipe Serie'} %}
       <h3 id="blessures" class="whitetitle"> Infirmerie </h3>
       <div id="injuredplayers" class="injuries">   
@@ -142,12 +145,12 @@
     <div class="col-lg-2 mobilehide" style="order:3;"></div>
 </div>   
  <div class="row" style="opacity:0.9;justify-content:center">
-        <div class="col-4">
+        <div class="col-5">
           <a class="twitter-timeline" href="{{teams.0.twitter}}" data-chrome="no-footer" data-tweet-limit="12">Twitter</a>
           <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
 
-        <div class="col-4">
+        <div class="col-5">
           <a class="twitter-timeline" href="{{teams.1.twitter}}" data-chrome="no-footer" data-tweet-limit="12">Twitter</a>
           <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
