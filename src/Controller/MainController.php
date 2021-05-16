@@ -97,4 +97,15 @@ class MainController extends AbstractController
             
         ]);
     }
+
+    /**
+     * @Route("/graph/{stat}/{playerId}", name="graph")
+     */
+    public function graph(StatsManager $StatsManager, int $stat, int $playerId)
+    {
+        $graph=$StatsManager->getGraphStats($stat,$playerId);
+         return $this->render('graph.html.twig',[
+            'graph'=>$graph,
+            ]);  
+    }
 }

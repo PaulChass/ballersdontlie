@@ -24,25 +24,25 @@
     {% for joueur in joueurs_domicile %}
         <tr class="ty-compact-list1">
         <td><img class="small-picture" src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/{{joueur.id}}.png"/>{{joueur.name}} </td>
-        <td>{{joueur.points}} 
+        <td><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;" href= {{ path('graph', {stat: 0,playerId:joueur.id}) }}>{{joueur.points}} 
         {# if joueur.pointsRank < 50 %}({{joueur.pointsRank}}){% endif #}
-        </td>
-        <td> {{joueur.fg_pct}}
+        </a></td>
+        <td> <a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 1,playerId:joueur.id}) }}>{{joueur.fg_pct}}</a>
         {# if joueur.fg_pctRank < 50 %}({{joueur.fg_pctRank}}){% endif #}</td>
-        <td class="mobilehide"> {{joueur.three_fg_pct}}
+        <td class="mobilehide"><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 2,playerId:joueur.id}) }}> {{joueur.three_fg_pct}}</a>
         {# if joueur.three_fg_pctRank < 50 %}({{joueur.three_fg_pctRank}}){% endif #}</td>
-        <td>{{joueur.rebounds}}
+        <td><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 3,playerId:joueur.id}) }}>{{joueur.rebounds}}</a>
         {# if joueur.reboundsRank < 50 %}({{joueur.reboundsRank}}){# endif #}</td>
-        <td>{{joueur.assists}}
+        <td><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 4,playerId:joueur.id}) }}>{{joueur.assists}}</a>
         {# if joueur.assistsRank < 50 %}({{joueur.assistsRank}}){% endif #}</td>
-        <td class="mobilehide"> {{joueur.turnovers}}
+        <td class="mobilehide"><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 5,playerId:joueur.id}) }}> {{joueur.turnovers}}</a>
         {# if joueur.turnoversRank < 50 %}({{joueur.turnoversRank}}){% endif #}</td>
-        <td class="mobilehide"> {{joueur.steals}}
+        <td class="mobilehide"><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 6,playerId:joueur.id}) }}> {{joueur.steals}}</a>
         {# if joueur.stealsRank < 50 %}({{joueur.stealsRank}}){% endif #}</td>
-        <td class="mobilehide"> {{joueur.blocks}}
+        <td class="mobilehide"> <a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 7,playerId:joueur.id}) }}>{{joueur.blocks}}</a>
         {# if joueur.blocksRank < 50 %}({{joueur.blocksRank}}){% endif #}</td>
-        <td class="mobilehide"> {{joueur.plusminus}}{# if joueur.plusminusRank < 50 %}({{joueur.plusminusRank}}){% endif #}</td>
-        <td class="mobilehide"> {{joueur.minutes}}{# if joueur.minutesRank < 50 %}({{joueur.minutesRank}}){% endif #}</td>
+        <td class="mobilehide"> <a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 8,playerId:joueur.id}) }}>{{joueur.plusminus}}</a>{# if joueur.plusminusRank < 50 %}({{joueur.plusminusRank}}){% endif #}</td>
+        <td class="mobilehide"> <a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;"href= {{ path('graph', {stat: 9,playerId:joueur.id}) }}>{{joueur.minutes}}</a>{# if joueur.minutesRank < 50 %}({{joueur.minutesRank}}){% endif #}</td>
         <td class="mobilehide">{{joueur.games}}</td>
 
         

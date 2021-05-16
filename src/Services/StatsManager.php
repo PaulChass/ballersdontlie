@@ -56,6 +56,94 @@ class StatsManager
     }
 
 
+    public function getGraphStats($stat,$playerId)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://stats.nba.com/stats/leaguegamefinder/?playerOrTeam=P&leagueId=00&season=2020-21&seasonType=Regular+Season&teamId=&vsTeamId=&playerId='.$playerId.'&outcome=&location=&dateFrom=&dateTo=&vsConference=&vsDivision=&conference=&division=&seasonSegment=&poRound=0&starterBench=&gtPts=&gtReb=&gtAst=&gtStl=&gtBlk=&gtOReb=&gtDReb=&gtDD=&gtTD=&gtMinutes=&gtTov=&gtPF=&gtFGM=&gtFGA=&gtFG_Pct=&gtFTM=&gtFTA=&gtFT_Pct=&gtFG3M=&gtFG3A=&gtFG3_Pct=&ltPts=&ltReb=&ltAst=&ltStl=&ltBlk=&ltOReb=&ltDReb=&ltDD=&ltTD=&ltMinutes=&ltTov=&ltPF=&ltFGM=&ltFGA=&ltFG_Pct=&ltFTM=&ltFTA=&ltFT_Pct=&ltFG3M=&ltFG3A=&ltFG3_Pct=&eqPts=&eqReb=&eqAst=&eqStl=&eqBlk=&eqOReb=&eqDReb=&eqDD=&eqTD=&eqMinutes=&eqTov=&eqPF=&eqFGM=&eqFGA=&eqFG_Pct=&eqFTM=&eqFTA=&eqFT_Pct=&eqFG3M=&eqFG3A=&eqFG3_Pct=',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Host:  stats.nba.com',
+            'Connection:  keep-alive',
+            'Accept:  application/json, text/plain, */*',
+            'x-nba-stats-token:  true',
+            'User-Agent:  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36 Edg/88.0.705.74',
+            'x-nba-stats-origin:  stats',
+            'Origin:  https://www.nba.com',
+            'Sec-Fetch-Site:  same-site',
+            'Sec-Fetch-Mode:  cors',
+            'Sec-Fetch-Dest:  empty',
+            'Referer:  https://www.nba.com/',
+            'Accept-Encoding:  gzip, deflate, br',
+            'Accept-Language:  en-GB,en;q=0.9,en-US;q=0.8',
+            'Cookie: ak_bmsc=F4D7897B863C9FF8B350058A15F8A253685974C99818000063D2A06051253F58~plwsuTygOa56hyu/Ug1gECaUUCeVFHjqxwQxu7xX7ATLl60nETSCQxDdKd/zySSFMxqW0XLcT0usNeeSkfBxor7p8Gj77Xia8u2UiHmbkeE4Ct2cgId/whr8wk3ln3JTwutTPTD+CXUGAjTcHiAQ4v1QxovuWz1/kFOthNmS3eHC6k7ORqsD1sSzBViWx8cymjgFCcmd1ZF1S5Fh5HhLzZrr4AOXwgIXeVZfkkNzNkE9E=; bm_sv=CC2722565BA594125D97E2E7B69BFCD0~svErlqy5W+QiEz7B7D/xLTvhvTo9cTfwORkcOyxgKZzUUD6/xXqBGnBY0ZMnMXo4VBwirI1ZiZzXnksWoJCFvD1U49hjCHv+OWjfMItUCB0FaPuc4FGOPQrygRIzgivtz1ucN2zG8Czv8CyBvf0jGg=='
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $playersGames = json_decode($response)->resultSets[0]->rowSet;
+        for ($i=0; $i < 8; $i++) { 
+            $label[$i]= $playersGames[$i][8];
+            switch ($stat) {
+                case 1:
+                    $graph['stat']='% Tir';
+                    $value[$i]=  $playersGames[$i][14];
+                    break;
+                case 2:
+                    $graph['stat']='% Tir 3pts';
+                    $value[$i]=  $playersGames[$i][17];
+                    break;
+                case 3:
+                    $graph['stat']='Rebonds par match';
+                    $value[$i]=  $playersGames[$i][23];
+                    break;
+                case 4:
+                    $graph['stat']='Passes decisives';
+                    $value[$i]=  $playersGames[$i][24];
+                    break; 
+                case 5:
+                    $graph['stat']='Pertes de balle';
+                    $value[$i]=  $playersGames[$i][27];
+                    break;  
+                case 6:
+                    $graph['stat']='Interceptions ';
+                    $value[$i]=  $playersGames[$i][25];
+                    break; 
+                case 7:
+                    $graph['stat']='Contres par match';
+                    $value[$i]=  $playersGames[$i][26];
+                    break; 
+                case 8:
+                    $graph['stat']='Plus/minus';
+                    $value[$i]=  $playersGames[$i][29];
+                    break;  
+                case 9:
+                        $graph['stat']='Minutes par match';
+                        $value[$i]=  $playersGames[$i][10];
+                        break; 
+                  
+                default:
+                    $graph['stat']='Points par match';
+                    $value[$i]=  $playersGames[$i][11];
+                    break;
+            }
+        }
+        $graph['label']=$label;
+        $graph['value']=$value;
+        $graph['title']=$playersGames[$i][2];
+        
+        return $graph;
+    }
+
     public function returnStats($teamId,$teamsStats,$defTeamsStats)
     {
         
@@ -156,6 +244,8 @@ class StatsManager
         });
         return $players;
     }
+
+
     public function curl($teamOrplayer,$teamId,$lastNgames,$location='',$outcome='',$opponentTeamId=0,$paceAdjust='N'){
         
         $curl = curl_init();
