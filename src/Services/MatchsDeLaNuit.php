@@ -19,33 +19,39 @@ class MatchsDeLaNuit
     {       
         date_default_timezone_set('America/Indiana/Indianapolis'); 
         $date=time(); 
-        $schedule=$this->schedule();
-        $games=$schedule->league->standard;
         $tonightGames=[];
-        for ($i=0; $i < count($games); $i++) { 
-            if($games[$i]->startDateEastern==date('Ymd',$date)){
-                $match['GameId']=$games[$i]->gameId;
-                //$gid=$match['GameId'];
-                $homeTeamAbv=substr($games[$i]->gameUrlCode,9,3);
-                $awayTeamAbv=substr($games[$i]->gameUrlCode,12,3);
-                $gamedate=$games[$i]->startTimeEastern;
-                $match['HomeTeamId']= $games[$i]->hTeam->teamId;
-                $match['HomeLogoUrl']= 'https://stats.nba.com/media/img/teams/logos/'.$homeTeamAbv.'_logo.svg';
-                
-                $match['AwayTeamId']= $games[$i]->vTeam->teamId;
-                $match['AwayLogoUrl']= 'https://stats.nba.com/media/img/teams/logos/'.$awayTeamAbv.'_logo.svg';
+        while($tonightGames==[])
+        {
+            $schedule=$this->schedule();
+            $games=$schedule->league->standard;
+            
+            for ($i=0; $i < count($games); $i++) { 
+                if($games[$i]->startDateEastern==date('Ymd',$date)){
+                    $match['GameId']=$games[$i]->gameId;
+                    //$gid=$match['GameId'];
+                    $homeTeamAbv=substr($games[$i]->gameUrlCode,9,3);
+                    $awayTeamAbv=substr($games[$i]->gameUrlCode,12,3);
+                    $gamedate=$games[$i]->startTimeEastern;
+                    $match['HomeTeamId']= $games[$i]->hTeam->teamId;
+                    $match['HomeLogoUrl']= 'https://stats.nba.com/media/img/teams/logos/'.$homeTeamAbv.'_logo.svg';
+                    
+                    $match['AwayTeamId']= $games[$i]->vTeam->teamId;
+                    $match['AwayLogoUrl']= 'https://stats.nba.com/media/img/teams/logos/'.$awayTeamAbv.'_logo.svg';
 
-                $match['period']= null;
-                $match['timeRemaining']= null;
-                $match['homeScore']= null;
-                $match['awayScore']= null;
-                $match['id']=null;
-                date_default_timezone_set('Europe/Paris'); 
-                $match['Time']=date($gamedate);
-                //$match['Time']=date('H:i', mktime(date('H', strtotime($gamedate)),date('i', strtotime($gamedate))));
-                array_push($tonightGames,$match);
-                date_default_timezone_set('America/Indiana/Indianapolis');
+                    $match['period']= null;
+                    $match['timeRemaining']= null;
+                    $match['homeScore']= null;
+                    $match['awayScore']= null;
+                    $match['id']=null;
+                    $match['day']=$date;
+                    date_default_timezone_set('Europe/Paris'); 
+                    $match['Time']=date($gamedate);
+                    //$match['Time']=date('H:i', mktime(date('H', strtotime($gamedate)),date('i', strtotime($gamedate))));
+                    array_push($tonightGames,$match);
+                    date_default_timezone_set('America/Indiana/Indianapolis');
+                }
             }
+        $date=$date+60*60*24;
         }
         return $tonightGames;
     }

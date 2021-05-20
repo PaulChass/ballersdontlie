@@ -22,12 +22,20 @@ class StatsManager
      *     tableau avec stats des équipes à domicile et à l'exterieur ainsi que la date
      *     
     **/
-    public function teamStats($teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust)
+    public function teamStats($teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust,$seasonType)
     {
-        $teamsStatsJson = $this->curl('team',$teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust);
+        $teamsStatsJson = $this->curl('team',$teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust,$seasonType);
         $teamsStats=json_decode($teamsStatsJson);
+        if($teamsStats->resultSets[0]->rowSet==[])
+        {
+            $teamsStatsJson = $this->curl('team',$teamId,0);
+            $teamsStats=json_decode($teamsStatsJson);
+            $teamStats=$this->returnStats($teamId, $teamsStats, null);
+            $teamStats['error']="Aucun résultat trouver pour les critères selectionnés";
+            return $teamStats;
+            }
         $teamStats=$this->returnStats($teamId, $teamsStats, null);
-        
+       
         return $teamStats;
     } 
 
@@ -58,6 +66,7 @@ class StatsManager
 
     public function getGraphStats($stat,$playerId)
     {
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -83,7 +92,6 @@ class StatsManager
             'Referer:  https://www.nba.com/',
             'Accept-Encoding:  gzip, deflate, br',
             'Accept-Language:  en-GB,en;q=0.9,en-US;q=0.8',
-            'Cookie: ak_bmsc=F4D7897B863C9FF8B350058A15F8A253685974C99818000063D2A06051253F58~plwsuTygOa56hyu/Ug1gECaUUCeVFHjqxwQxu7xX7ATLl60nETSCQxDdKd/zySSFMxqW0XLcT0usNeeSkfBxor7p8Gj77Xia8u2UiHmbkeE4Ct2cgId/whr8wk3ln3JTwutTPTD+CXUGAjTcHiAQ4v1QxovuWz1/kFOthNmS3eHC6k7ORqsD1sSzBViWx8cymjgFCcmd1ZF1S5Fh5HhLzZrr4AOXwgIXeVZfkkNzNkE9E=; bm_sv=CC2722565BA594125D97E2E7B69BFCD0~svErlqy5W+QiEz7B7D/xLTvhvTo9cTfwORkcOyxgKZzUUD6/xXqBGnBY0ZMnMXo4VBwirI1ZiZzXnksWoJCFvD1U49hjCHv+OWjfMItUCB0FaPuc4FGOPQrygRIzgivtz1ucN2zG8Czv8CyBvf0jGg=='
         ),
         ));
 
@@ -137,6 +145,8 @@ class StatsManager
                     break;
             }
         }
+        $label=array_reverse($label);
+        $value=array_reverse($value);
         $graph['label']=$label;
         $graph['value']=$value;
         $graph['title']=$playersGames[$i][2];
@@ -246,12 +256,12 @@ class StatsManager
     }
 
 
-    public function curl($teamOrplayer,$teamId,$lastNgames,$location='',$outcome='',$opponentTeamId=0,$paceAdjust='N'){
+    public function curl($teamOrplayer,$teamId,$lastNgames,$location='',$outcome='',$opponentTeamId=0,$paceAdjust='N',$seasonType='Regular+Season'){
         
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames='.$lastNgames.'&LeagueID=00&Location='.$location.'&MeasureType=Base&Month=0&OpponentTeamID='.$opponentTeamId.'&Outcome='.$outcome.'&PORound=0&PaceAdjust='.$paceAdjust.'&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
+        CURLOPT_URL => 'https://stats.nba.com/stats/leaguedash'.$teamOrplayer.'stats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames='.$lastNgames.'&LeagueID=00&Location='.$location.'&MeasureType=Base&Month=0&OpponentTeamID='.$opponentTeamId.'&Outcome='.$outcome.'&PORound=0&PaceAdjust='.$paceAdjust.'&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season=2020-21&SeasonSegment=&SeasonType='.$seasonType.'&ShotClockRange=&StarterBench=&TeamID='.$teamId.'&TwoWay=0&VsConference=&VsDivision=&Weight=',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,

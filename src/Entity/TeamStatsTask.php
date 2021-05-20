@@ -42,6 +42,11 @@ class TeamStatsTask
      */
     private $paceAdjust;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $seasonType;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class TeamStatsTask
     public function setPaceAdjust(?string $paceAdjust): self
     {
         $this->paceAdjust = $paceAdjust;
+
+        return $this;
+    }
+
+    public function getSeasonType(): ?string
+    {
+        return $this->seasonType;
+    }
+
+    public function setSeasonType(string $seasonType): self
+    {
+        $this->seasonType = $seasonType;
 
         return $this;
     }

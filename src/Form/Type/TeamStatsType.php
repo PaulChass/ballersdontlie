@@ -21,7 +21,7 @@ class TeamStatsType extends AbstractType
                     'non' => 'non',
                     'domicile vs exterieur' => 'yes',
                 ],
-                'label' => 'Domicile/exterieur'
+                'label' => 'Dom / Ext'
             ])
             ->add('outcome', ChoiceType::class, [
                 'choices'  => [
@@ -29,19 +29,28 @@ class TeamStatsType extends AbstractType
                     'Win ' => 'W',
                     'Lose'=>'L'
                 ],
-                'label' => 'Victoires/Défaites','required' => false
+                'label' => 'Win / Lose','required' => false
             ])
             ->add('opponentTeamId', ChoiceType::class, [
                 'choices'  => [
                     'non' => null,
                     'Vs Matchup' => 1,
-                ]
+                ],
+                'label' => 'Vs Matchup'
             ])
             ->add('paceAdjust', ChoiceType::class, [
                 'choices'  => [
                     'Non' => 'N',
                     'Oui' => 'Y',
                 ]
+            ])
+            ->add('seasonType', ChoiceType::class, [
+                'choices'  => [
+                    'Regulière' => 'Regualr+Season',
+                    'Playin' => 'PlayIn',
+                    'Playoffs'=>'Playoffs'
+                ],
+                'label' => 'Season type'
             ])
             ->add('Charger', SubmitType::class)
         ;

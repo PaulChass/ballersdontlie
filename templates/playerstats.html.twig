@@ -1,7 +1,7 @@
 
 <div id="player" class="playerstats " style="text-align:center;width:100%;">   
      
-    <table class="table table-hover table-dark" style="text-align:left;">
+    <table class="table table-hover table-dark" style="background-color:rgba(20,20,20,0.9);color:white;text-align:left;">
     
       <thead>
       <tr syle="">
@@ -19,8 +19,12 @@
         <th scope="col" class="mobilehide"> Matchs </th>
 
       </tr>
+      <style>
+      a:link{color:white}
+      a:hover {color:white}</style>
       </thead>
       <tbody>
+      
     {% for joueur in joueurs_domicile %}
         <tr class="ty-compact-list1">
         <td><img class="small-picture" src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/{{joueur.id}}.png"/>{{joueur.name}} </td>
@@ -52,8 +56,9 @@
 
     </tbody>    
     </table>
+             <p class="alert-info" style="padding-right:0px;width:66%;margin:auto;margin-bottom:15px;text-align:center;padding:5px;border-radius:3px;">Clique sur une stat pour voir son évolution</p>
 
-    <table class="table table-hover table-dark"  style="text-align:left;">
+    <table class="table table-hover table-dark"  style="background-color:rgba(20,20,20,0.9);color:white;text-align:left;">
     <thead>
     <tr>
       <th scope="col"><img style="max-height:80px" src="https://stats.nba.com/media/img/teams/logos/{{teams.1.Stats.team_abv}}_logo.svg"/></th>
@@ -72,8 +77,7 @@
     </thead>
     <tbody>
     {% for joueur in joueurs_exterieur %}
-    
-        <tr class="ty-compact-list1">
+     <tr class="ty-compact-list2">
         <td><img class="small-picture" src="https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/1040x760/{{joueur.id}}.png"/>{{joueur.name}} </td>
         <td><a onclick="window.open(this.href, '', 'toolbar=no, location=no, directories=no, status=yes, scrollbars=yes, resizable=yes, copyhistory=no, width=1080px, height=470px'); return false;" href= {{ path('graph', {stat: 0,playerId:joueur.id}) }}>{{joueur.points}} 
         {# if joueur.pointsRank < 50 %}({{joueur.pointsRank}}){% endif #}
@@ -97,7 +101,7 @@
         <td class="mobilehide">{{joueur.games}}</td>
 
         
-      </tr>  
+      </tr> 
     {% endfor %}
 
     <tr class="show-more2 d-flex justify-content-center"><td>Voir plus</td></tr>

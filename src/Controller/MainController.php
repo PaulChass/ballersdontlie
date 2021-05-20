@@ -46,7 +46,7 @@ class MainController extends AbstractController
             $matchsDeDemain= array_slice($matchsDeLaNuit,6);
             $matchsDeLaNuit=array_slice($matchsDeLaNuit,0,6);
         }
-        $lastNgames=0;$location[0]='';$location[1]='';$outcome='';$opponentTeamId[0]=0;$opponentTeamId[1]=0;$paceAdjust='N';
+        $lastNgames=0;$location[0]='';$location[1]='';$outcome='';$opponentTeamId[0]=0;$opponentTeamId[1]=0;$paceAdjust='N';$seasonType='Regular+Season';
 
 
         $teamStatsTask= new TeamStatsTask();
@@ -64,6 +64,7 @@ class MainController extends AbstractController
             $outcome= $teamStatsTask->getOutcome();
             if($teamStatsTask->getOpponentTeamId()==1){$opponentTeamId[0]=$equipesdelaNuit[1];$opponentTeamId[1]=$equipesdelaNuit[0];};
             $paceAdjust= $teamStatsTask->getPaceAdjust();
+            $seasonType= $teamStatsTask->getSeasonType();
             
             // ... perform some action, such as saving the task to the database
             // for example, if Task is a Doctrine entity, save it!1
@@ -71,8 +72,8 @@ class MainController extends AbstractController
             // $entityManager->persist($task);
             // $entityManager->flush()
             }        
-        $teams[0]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[0],$lastNgames,$location[0],$outcome,$opponentTeamId[0],$paceAdjust);
-        $teams[1]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[1],$lastNgames,$location[1],$outcome,$opponentTeamId[1],$paceAdjust);
+        $teams[0]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[0],$lastNgames,$location[0],$outcome,$opponentTeamId[0],$paceAdjust,$seasonType);
+        $teams[1]['Stats'] = $StatsManager->teamStats($equipesdelaNuit[1],$lastNgames,$location[1],$outcome,$opponentTeamId[1],$paceAdjust,$seasonType);
         $teams[0]['injuries'] = $StatsManager->injury($equipesdelaNuit[0]);
         $teams[1]['injuries'] = $StatsManager->injury($equipesdelaNuit[1]);
         $teams[0]['twitter'] = $StatsManager->twitter($equipesdelaNuit[0]);

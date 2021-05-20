@@ -16,14 +16,14 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	data: [{
 		type: "line",
 			dataPoints: [
-                {label:'{{graph.label.0}}',y:{{graph.value.0}}},
-                {label:'{{graph.label.1}}',y:{{graph.value.1}}},
-                {label:'{{graph.label.2}}',y:{{graph.value.2}}},
-                {label:'{{graph.label.3}}',y:{{graph.value.3}}},
-                {label:'{{graph.label.4}}',y:{{graph.value.4}}},
-                {label:'{{graph.label.5}}',y:{{graph.value.5}}},
-                {label:'{{graph.label.6}}',y:{{graph.value.6}}},
-                {label:'{{graph.label.7}}',y:{{graph.value.7}}}
+                {label:'{{graph.label.0[3:]}}',y:{{graph.value.0}}},
+                {label:'{{graph.label.1[3:]}}',y:{{graph.value.1}}},
+                {label:'{{graph.label.2[3:]}}',y:{{graph.value.2}}},
+                {label:'{{graph.label.3[3:]}}',y:{{graph.value.3}}},
+                {label:'{{graph.label.4[3:]}}',y:{{graph.value.4}}},
+                {label:'{{graph.label.5[3:]}}',y:{{graph.value.5}}},
+                {label:'{{graph.label.6[3:]}}',y:{{graph.value.6}}},
+                {label:'{{graph.label.7[3:]}}',y:{{graph.value.7}}}
                 ]
 	}]
 });
