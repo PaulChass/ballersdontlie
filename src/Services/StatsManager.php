@@ -39,16 +39,26 @@ class StatsManager
         return $teamStats;
     } 
 
-    public function playersStats($teamId,$lastNgames)
+    public function playerStats($teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust,$seasonType)
     {
-        $players =  $this->curl('player',$teamId,$lastNgames);
-        $playersStats= $this->returnPlayerStats($players,$teamId);
-        return $playersStats;
-    }
+        $playersStatsJson = $this->curl('player',$teamId,$lastNgames,$location,$outcome,$opponentTeamId,$paceAdjust,$seasonType);
+        $playersStats=json_decode($playersStatsJson);
+        if($playersStats->resultSets[0]->rowSet==[])
+        {
+            $playersStatsJson = $this->curl('player',$teamId,0);
+            $playersStats=json_decode($playersStatsJson);
+            $playerStats=$this->returnPlayerStats($playersStats,$teamId);
+            $playerStats['error']="Aucun résultat trouver pour les critères selectionnés";
+            return $playerStats;
+            }
+        $playerStats=$this->returnPlayerStats($playersStats,$teamId);
+       
+        return $playerStats;
+    } 
 
     public function bestPlayers5($teamId,$playersStats)
     {
-        $players5Stats=$this->playersStats($teamId,5);
+        $players5Stats=$this->playerStats($teamId,5,'','',0,'N','Regular+Season');
         $best3players = array_slice($players5Stats, 0, 3);  
         for ($i=0; $i < 3; $i++) {
             $j=0; 
@@ -217,7 +227,6 @@ class StatsManager
     public function returnPlayerStats($playersStats,$teamId)
     {
         $players=[];$player=[];
-        $playersStats=json_decode($playersStats);
         for ($i=0; $i < count($playersStats->resultSets[0]->rowSet) ; $i++) { 
             if ($playersStats->resultSets[0]->rowSet[$i][2]==$teamId)
                 {

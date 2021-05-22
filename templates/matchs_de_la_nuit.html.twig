@@ -42,7 +42,7 @@
 
             {% if tomorrow_matchs is not null %}
             <div class="carousel-item">
-                <h1 class="d-flex justify-content-center whitetitle"> Matchs de la nuit du {{ "now"|date("d/m") }} </h1>
+                <h1 class="d-flex justify-content-center whitetitle"> Matchs de la nuit du {{ tomorrow_matchs.0.day|date('d/m') }} </h1>
 
                 <div class="row d-flex d-block w-100 justify-content-around" alt="Second Slide">
                         {% for match in tomorrow_matchs  %}

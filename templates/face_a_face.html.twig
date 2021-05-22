@@ -94,7 +94,7 @@
           <div class="col">{{ form_row(form.lastNgames) }}</div>
           <div class="col">    {{ form_row(form.location) }}</div>
           <div class="col">    {{ form_row(form.outcome) }}</div>
-          <div class="col">    {{ form_row(form.opponentTeamId, {  'label': 'vsMatchup' }) }}</div>
+          <div class="col">    {{ form_row(form.opponentTeamId)}}</div>
           <div class="col">    {{ form_row(form.paceAdjust) }}</div>
           <div class="col">    {{ form_row(form.seasonType) }}</div>
           <div class="col" style="margin-top:25px;">  {{ form_row(form.Charger, { 'attr' : { 'class': 'btn btn-dark' }  }) }}</div>
@@ -145,8 +145,23 @@
       </div>
 
        <h3 id="joueurs" class="whitetitle"> Stats des Joueurs </h3>
+      {% if joueurs_domicile.error is defined %}
+      <div class="alert alert-warning" role="alert">{{ joueurs_domicile.error}}</div>
+      {% else %}
       {% include 'playerstats.html.twig' %}
-     
+      {% endif %}
+      {{ form_start(form2) }}
+        {{ form_errors(form2) }}
+        <div class="row" style="font-size:1rem;color:white;">
+          <div class="col" style="max-width:100%">{{ form_row(form2.lastNgames) }}</div>
+          <div class="col">    {{ form_row(form2.location) }}</div>
+          <div class="col">    {{ form_row(form2.outcome) }}</div>
+          <div class="col">    {{ form_row(form2.opponentTeamId)}}</div>
+          <div class="col">    {{ form_row(form2.paceAdjust) }}</div>
+          <div class="col">    {{ form_row(form2.seasonType) }}</div>
+          <div class="col" style="margin-top:25px;">  {{ form_row(form2.Charger, { 'attr' : { 'class': 'btn btn-dark' }  }) }}</div>
+          {{ form_end(form2) }}
+        </div>
 
        
     </div>
@@ -157,12 +172,12 @@
 </div>   
  <div class="row" style="opacity:0.9;justify-content:space-around">
         <div class="col-lg-5 col-10">
-          <a class="twitter-timeline" href="{{teams.0.twitter}}" data-chrome="no-footer" data-tweet-limit="12">Twitter</a>
+          <a class="twitter-timeline" href="{{teams.0.twitter}}" data-chrome="no-footer" data-tweet-limit="5">Twitter</a>
           <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
 
         <div class="col-lg-5 col-10">
-          <a class="twitter-timeline" href="{{teams.1.twitter}}" data-chrome="no-footer" data-tweet-limit="12">Twitter</a>
+          <a class="twitter-timeline" href="{{teams.1.twitter}}" data-chrome="no-footer" data-tweet-limit="5">Twitter</a>
           <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
       </div>

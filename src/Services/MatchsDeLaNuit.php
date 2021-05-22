@@ -15,10 +15,11 @@ class MatchsDeLaNuit
  *     tableau avec noms et id des équipes à domicile et à l'exterieur ainsi que la date
  *     
 **/
-    public function MatchsDeLaNuit()
+    public function MatchsDeLaNuit($day=0)
     {       
         date_default_timezone_set('America/Indiana/Indianapolis'); 
         $date=time(); 
+        $date=$date+$day*+60*60*24;
         $tonightGames=[];
         while($tonightGames==[])
         {
